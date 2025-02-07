@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="false">* </domain> <!-- Allow cleartext traffic for all domains -->
+    </domain-config>
+
+    <!-- This should work for local IP addresses -->
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="false">192.168.0.0/16</domain>
+        <!-- Allow cleartext traffic for local network -->
+    </domain-config>
+</network-security-config>
