@@ -1,0 +1,7 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/purple_200" />
+    <corners android:radius="16dp" /> <!-- Radius für abgerundete Ecken -->
+    <stroke
+        android:color="@color/transparent"
+        android:width="5dp" /> <!-- Breite des Randes -->
+</shape>

@@ -1,10 +1,31 @@
-<TextView
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/textView"
-    android:layout_width="80dp"
-    android:layout_height="80dp"
-    android:gravity="center"
-    android:textSize="16sp"
-    android:background="@android:color/darker_gray"
-    android:layout_margin="0dp"/>
+    android:id="@+id/field"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:visibility="gone"
+    android:background="@drawable/rounded_background">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:textSize="16sp"
+        android:text="unmute"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="12dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" />
+
+    <CheckBox
+        android:id="@+id/checkbox"
+        android:layout_width="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="12dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2" />
+</RelativeLayout>
+
+
 

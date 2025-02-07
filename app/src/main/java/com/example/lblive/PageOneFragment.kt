@@ -8,17 +8,20 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class PageOneFragment : Fragment(R.layout.first_page) {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: GridAdapter
-    private val items = MutableList(32) { "Feld ${it + 1}" }
+    private lateinit var fabAdd: FloatingActionButton
+    private val items = MutableList(32) { "" }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         recyclerView = view.findViewById(R.id.recyclerView)
+        fabAdd = view.findViewById(R.id.fab_add)
 
         // Warten, bis das Layout fertig ist
         view.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
@@ -39,6 +42,15 @@ class PageOneFragment : Fragment(R.layout.first_page) {
                 recyclerView.layoutManager = GridLayoutManager(requireContext(), columns)
                 adapter = GridAdapter(items, itemWidth, itemHeight)
                 recyclerView.adapter = adapter
+
+                // Plus-Button: Aktiviert das nächste Feld
+                fabAdd.setOnClickListener {
+                    val nextEmptyIndex = items.indexOfFirst { it.isEmpty() }
+                    if (nextEmptyIndex != -1) {
+                        items[nextEmptyIndex] = "mute"
+                        adapter.notifyItemChanged(nextEmptyIndex)
+                    }
+                }
 
                 val itemTouchHelper = ItemTouchHelper(ItemMoveCallback(adapter))
                 itemTouchHelper.attachToRecyclerView(recyclerView)
