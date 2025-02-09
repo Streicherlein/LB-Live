@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import androidx.appcompat.app.AlertDialog
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class PageOneFragment : Fragment(R.layout.first_page) {
@@ -15,7 +16,9 @@ class PageOneFragment : Fragment(R.layout.first_page) {
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: GridAdapter
     private lateinit var fabAdd: FloatingActionButton
-    private val items = MutableList(32) { "" }
+    private val items = MutableList(32) { "" }  // Alle Felder starten leer
+    private var isSliderMode = false  // Gibt an, ob der Slider-Modus aktiv ist
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -30,8 +33,6 @@ class PageOneFragment : Fragment(R.layout.first_page) {
 
                 // Berechnung der nutzbaren Bildschirmhöhe
                 val screenWidth = requireContext().resources.displayMetrics.widthPixels
-                val screenHeight = requireContext().resources.displayMetrics.heightPixels
-
                 val windowHeight = view.height // Höhe des Fragments ohne Statusleiste & ActionBar
 
                 val columns = 4
@@ -40,22 +41,49 @@ class PageOneFragment : Fragment(R.layout.first_page) {
                 val itemHeight = windowHeight / rows
 
                 recyclerView.layoutManager = GridLayoutManager(requireContext(), columns)
-                adapter = GridAdapter(items, itemWidth, itemHeight)
+                adapter = GridAdapter(items, itemWidth, itemHeight, isSliderMode)
                 recyclerView.adapter = adapter
 
                 // Plus-Button: Aktiviert das nächste Feld
                 fabAdd.setOnClickListener {
-                    val nextEmptyIndex = items.indexOfFirst { it.isEmpty() }
-                    if (nextEmptyIndex != -1) {
-                        items[nextEmptyIndex] = "mute"
-                        adapter.notifyItemChanged(nextEmptyIndex)
-                    }
+                    showSelectionDialog()
                 }
 
                 val itemTouchHelper = ItemTouchHelper(ItemMoveCallback(adapter))
                 itemTouchHelper.attachToRecyclerView(recyclerView)
             }
         })
+    }
+
+    // Dialog zur Auswahl zwischen Mute und Slider
+    private fun showSelectionDialog() {
+        val options = arrayOf("Mute", "Slider")
+        val builder = AlertDialog.Builder(requireContext())
+            .setTitle("Wähle eine Option")
+            .setItems(options) { dialog, which ->
+                when (which) {
+                    0 -> addMuteField()  // "Mute" gewählt
+                    1 -> addSliderField()  // "Slider" gewählt
+                }
+            }
+        builder.create().show()
+    }
+
+    // Mute-Feld hinzufügen
+    private fun addMuteField() {
+        val nextEmptyIndex = items.indexOfFirst { it.isEmpty() }
+        if (nextEmptyIndex != -1) {
+            items[nextEmptyIndex] = "Mute"
+            adapter.notifyItemChanged(nextEmptyIndex)
+        }
+    }
+    // Slider-Feld hinzufügen
+    private fun addSliderField() {
+        val nextEmptyIndex = items.indexOfFirst { it.isEmpty() }
+        if (nextEmptyIndex != -1) {
+            items[nextEmptyIndex] = "Slider"
+            adapter.notifyItemChanged(nextEmptyIndex)
+        }
     }
 }
 
