@@ -66,6 +66,9 @@ dependencies {
     implementation(libs.androidx.swiperefreshlayout)
     // JSON Verarbeitung
     implementation(libs.json)
+
+    //gson for saving
+    implementation(libs.gson)
     // Für GridLayout, falls benötigt
     implementation(libs.androidx.lifecycle.runtime.ktx.v260)  // Für Lifecycle
     implementation(libs.androidx.constraintlayout)  // Für Layouts und ConstraintLayout, falls gewünscht

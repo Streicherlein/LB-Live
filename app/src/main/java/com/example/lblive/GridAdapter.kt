@@ -1,5 +1,7 @@
 package com.example.lblive
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,13 +9,23 @@ import android.widget.CheckBox
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
 class GridAdapter(
+    private val context: Context,
     private val items: MutableList<String>,
     private val itemWidth: Int,
     private val itemHeight: Int,
-    private val isSliderMode: Boolean
+    private val dragStateListener: (Boolean) -> Unit
 ) : RecyclerView.Adapter<GridAdapter.ViewHolder>(), ItemMoveCallback.ItemMoveListener {
+
+    private val sharedPreferences: SharedPreferences =
+        context.getSharedPreferences("grid_layout", Context.MODE_PRIVATE)
+
+    init {
+        loadLayout()
+    }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val textView: TextView = view.findViewById(R.id.textView)
@@ -37,38 +49,59 @@ class GridAdapter(
         val content = items[position]
 
         if (content.isEmpty()) {
-            // Unsichtbares Feld
             holder.mute_field.visibility = View.GONE
-        } else if (content == "Slider") {
-            // 1x4 Slider Block
-            holder.textView.text = "Slider"
+        } else if (content == "Mute") {
+            holder.textView.text = content
             holder.mute_field.visibility = View.VISIBLE
-            // Wenn das Feld zu einem Slider gehört, erweitere es über 4 Felder
-            if (position % 4 == 0) {
-                holder.itemView.layoutParams.height = itemHeight * 4  // 4 Felder hoch
-            }
-        } else {
-            // Aktiviertes Feld
-            holder.mute_field.visibility = View.VISIBLE
-
-            // Checkbox: Wechselt zwischen "Mute" und "Unmute"
             holder.checkbox.setOnCheckedChangeListener { _, isChecked ->
-                if (isChecked) {
-                    holder.textView.text = "mute"
-                } else {
-                    holder.textView.text = "unmute"
-                }
+                holder.textView.text = if (isChecked) "mute" else "unmute"
             }
-        }
+        } else if (content == "Slider") {
+            holder.textView.text = content
+            holder.mute_field.visibility = View.VISIBLE
+            }
     }
 
     override fun getItemCount() = items.size
 
     override fun onItemMove(fromPosition: Int, toPosition: Int) {
-        val item = items.removeAt(fromPosition)
-        items.add(toPosition, item)
+        if (items[fromPosition].isNotEmpty() && items[toPosition].isEmpty()) {
+            items[toPosition] = items[fromPosition]
+            items[fromPosition] = ""
+        } else {
+            val item = items.removeAt(fromPosition)
+            items.add(toPosition, item)
+        }
         notifyItemMoved(fromPosition, toPosition)
+        saveLayout()
+    }
+
+    override fun isMovable(fromPosition: Int, toPosition: Int): Boolean {
+        return items[fromPosition].isNotEmpty()
+    }
+
+    override fun onDragStateChanged(isDragging: Boolean) {
+        dragStateListener(isDragging)
+    }
+
+    private fun saveLayout() {
+        val json = Gson().toJson(items)
+        sharedPreferences.edit().putString("grid_order", json).apply()
+    }
+
+    private fun loadLayout() {
+        val json = sharedPreferences.getString("grid_order", null)
+        if (json != null) {
+            val type = object : TypeToken<MutableList<String>>() {}.type
+            val savedItems: MutableList<String> = Gson().fromJson(json, type)
+            if (savedItems.size == items.size) {
+                items.clear()
+                items.addAll(savedItems)
+            }
+        }
     }
 }
+
+
 
 
