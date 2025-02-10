@@ -6,26 +6,40 @@
     android:visibility="gone"
     android:background="@drawable/rounded_background">
 
+    <!-- TextView oben -->
     <TextView
         android:id="@+id/textView"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:gravity="center"
         android:textSize="16sp"
         android:text="unmute"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="12dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1" />
+        android:layout_marginTop="12dp"/>
 
+    <!-- CheckBox in der Mitte -->
     <CheckBox
         android:id="@+id/checkbox"
         android:layout_width="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="12dp"
         android:layout_height="wrap_content"
-        android:layout_weight="2" />
+        android:layout_below="@id/textView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="12dp"
+        android:visibility="gone"/>
+
+    <!-- Slider unten -->
+    <SeekBar
+        android:id="@+id/seekBar"
+        android:layout_width="wrap_content"
+        android:layout_height="200dp"
+        android:max="100"
+        android:progress="50"
+        android:rotation="270"
+        android:layout_gravity="center"
+        android:layout_marginTop="12dp"
+        android:visibility="gone"/>
 </RelativeLayout>
+
 
 
 

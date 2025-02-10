@@ -7,8 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.RelativeLayout
+import android.widget.SeekBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.slider.Slider
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
@@ -30,6 +32,7 @@ class GridAdapter(
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val textView: TextView = view.findViewById(R.id.textView)
         val checkbox: CheckBox = view.findViewById(R.id.checkbox)
+        val slider: SeekBar = view.findViewById(R.id.seekBar)
         val mute_field: RelativeLayout = view.findViewById(R.id.mute_field)
     }
 
@@ -53,12 +56,14 @@ class GridAdapter(
         } else if (content == "Mute") {
             holder.textView.text = content
             holder.mute_field.visibility = View.VISIBLE
+            holder.checkbox.visibility = View.VISIBLE
             holder.checkbox.setOnCheckedChangeListener { _, isChecked ->
                 holder.textView.text = if (isChecked) "mute" else "unmute"
             }
         } else if (content == "Slider") {
             holder.textView.text = content
             holder.mute_field.visibility = View.VISIBLE
+            holder.slider.visibility = View.VISIBLE
             }
     }
 

@@ -54,6 +54,7 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.gridlayout)
+    implementation(libs.material.v190)
     // OkHttp dependencies for network operations
     implementation(libs.okhttp)
     // AppCompat for backward compatibility
