@@ -1,7 +1,7 @@
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
@@ -18,7 +18,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="20dp"
-        android:src="@android:drawable/ic_input_add"
+        android:backgroundTint="@color/purple_200"
+        android:outlineAmbientShadowColor="@color/gray"
+        app:backgroundTint="@color/gray"
+        android:src="@drawable/ic_plus"
         android:contentDescription="Feld hinzufügen"/>
 </FrameLayout>
 

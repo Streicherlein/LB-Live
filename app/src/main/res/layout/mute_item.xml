@@ -3,8 +3,8 @@
     android:id="@+id/mute_field"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:visibility="gone"
-    android:background="@drawable/rounded_background">
+    android:visibility="visible"
+    android:background="@drawable/background_empty">
 
     <!-- TextView oben -->
     <TextView
@@ -15,7 +15,8 @@
         android:textSize="16sp"
         android:text="unmute"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="12dp"/>
+        android:layout_marginTop="12dp"
+        android:visibility="gone"/>
 
     <!-- CheckBox in der Mitte -->
     <CheckBox
@@ -30,11 +31,11 @@
     <!-- Slider unten -->
     <SeekBar
         android:id="@+id/seekBar"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="200dp"
         android:max="100"
         android:progress="50"
-        android:rotation="270"
+        android:rotation="0"
         android:layout_gravity="center"
         android:layout_marginTop="12dp"
         android:visibility="gone"/>

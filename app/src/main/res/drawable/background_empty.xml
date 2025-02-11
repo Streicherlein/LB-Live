@@ -1,0 +1,58 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="100dp"
+    android:height="100dp"
+    android:viewportWidth="100"
+    android:viewportHeight="100">
+
+    <!-- Hintergrund (optional, falls benötigt) -->
+    <group>
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="M0,0 H100 V100 H0 Z"/>
+    </group>
+
+    <!-- Horizontale Linie des Plus-Zeichens -->
+    <path
+        android:strokeWidth="5"
+        android:strokeColor="#000000"
+        android:pathData="M90,0 H100"/>
+
+    <!-- Vertikale Linie des Plus-Zeichens -->
+    <path
+        android:strokeWidth="5"
+        android:strokeColor="#000000"
+        android:pathData="M100,0 V10"/>
+
+    <path
+        android:strokeWidth="5"
+        android:strokeColor="#000000"
+        android:pathData="M90,100 H100"/>
+
+    <!-- Vertikale Linie des Plus-Zeichens -->
+    <path
+        android:strokeWidth="5"
+        android:strokeColor="#000000"
+        android:pathData="M100,100 V90"/>
+
+    <path
+        android:strokeWidth="5"
+        android:strokeColor="#000000"
+        android:pathData="M10,0 H0"/>
+
+    <!-- Vertikale Linie des Plus-Zeichens -->
+    <path
+        android:strokeWidth="5"
+        android:strokeColor="#000000"
+        android:pathData="M0,0 V10"/>
+
+    <path
+        android:strokeWidth="5"
+        android:strokeColor="#000000"
+        android:pathData="M00,90 V100"/>
+
+    <path
+        android:strokeWidth="5"
+        android:strokeColor="#000000"
+        android:pathData="M0,100 H10"/>
+
+</vector>

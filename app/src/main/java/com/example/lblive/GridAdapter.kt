@@ -10,10 +10,11 @@ import android.widget.CheckBox
 import android.widget.RelativeLayout
 import android.widget.SeekBar
 import android.widget.TextView
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.slider.Slider
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+
 
 class GridAdapter(
     private val context: Context,
@@ -51,20 +52,34 @@ class GridAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val content = items[position]
+        val layoutParams = holder.itemView.layoutParams
 
         if (content.isEmpty()) {
-            holder.grid_field.visibility = View.GONE
+            holder.textView.visibility = View.GONE
+            holder.checkbox.visibility = View.GONE
+            holder.slider.visibility = View.GONE
+            holder.grid_field.setBackgroundResource(R.drawable.background_empty)
         } else if (content == "Mute") {
+            holder.grid_field.setBackgroundResource(R.drawable.rounded_background)
             holder.textView.text = content
+            holder.textView.visibility = View.VISIBLE
             holder.grid_field.visibility = View.VISIBLE
             holder.checkbox.visibility = View.VISIBLE
             holder.checkbox.setOnCheckedChangeListener { _, isChecked ->
                 holder.textView.text = if (isChecked) "mute" else "unmute"
+
+                layoutParams.width = itemWidth
+                layoutParams.height = itemHeight
             }
         } else if (content == "Slider") {
+            holder.grid_field.setBackgroundResource(R.drawable.rounded_background)
             holder.textView.text = content
+            holder.textView.visibility = View.VISIBLE
             holder.grid_field.visibility = View.VISIBLE
             holder.slider.visibility = View.VISIBLE
+
+            layoutParams.width = itemWidth*4
+            layoutParams.height = itemHeight
             }
     }
 

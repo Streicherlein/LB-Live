@@ -4,11 +4,12 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.ViewTreeObserver
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import androidx.appcompat.app.AlertDialog
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class PageOneFragment : Fragment(R.layout.first_page) {
@@ -36,6 +37,17 @@ class PageOneFragment : Fragment(R.layout.first_page) {
                 val itemHeight = windowHeight / rows
 
                 recyclerView.layoutManager = GridLayoutManager(requireContext(), columns)
+                (recyclerView.layoutManager as GridLayoutManager).spanSizeLookup = object :
+                    SpanSizeLookup() {
+                    override fun getSpanSize(position: Int): Int {
+                        if (items[position] == "Slider") {
+                            return (4)
+                        }
+                        else {
+                            return 1
+                        }
+                    }
+                }
                 adapter = GridAdapter(requireContext(), items, itemWidth, itemHeight, ::updateFabIcon)
                 recyclerView.adapter = adapter
 
@@ -75,12 +87,10 @@ class PageOneFragment : Fragment(R.layout.first_page) {
     }
 
     private fun addSliderField() {
-        val startIndex = items.indexOfFirst { it.isEmpty() }
-        if (startIndex != -1 && startIndex % 4 == 0 && startIndex + 3 < items.size) {
-            for (i in 0..3) {
-                items[startIndex + i] = "Slider"
-            }
-            adapter.notifyDataSetChanged()
+        val nextEmptyIndex = items.indexOfFirst { it.isEmpty() }
+        if (nextEmptyIndex != -1) {
+            items[nextEmptyIndex] = "Slider"
+            adapter.notifyItemChanged(nextEmptyIndex)
         }
     }
 
