@@ -1,11 +1,13 @@
 package com.example.lblive
 
+import android.view.View
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import kotlin.reflect.KFunction2
 
 class ItemMoveCallback(
     private val listener: ItemMoveListener,
-    private val onItemDroppedOnTrash: (Int) -> Unit
+    private val onItemDroppedOnTrash: KFunction2<Int, View, Unit>
 ) : ItemTouchHelper.SimpleCallback(
     ItemTouchHelper.UP or ItemTouchHelper.DOWN or
             ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT, 0
@@ -43,13 +45,17 @@ class ItemMoveCallback(
 
     override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
         super.clearView(recyclerView, viewHolder)
-        if (isDragging) {
-            val position = viewHolder.adapterPosition
-            if (position != RecyclerView.NO_POSITION) {
-                onItemDroppedOnTrash(position)
-            }
+
+        val position = viewHolder.adapterPosition
+        if (position != RecyclerView.NO_POSITION) {
+            onItemDroppedOnTrash(position, viewHolder.itemView) // Item + View übergeben
         }
+
+        isDragging = false
+        listener.onDragStateChanged(false)
     }
+
+
 
     interface ItemMoveListener {
         fun onItemMove(fromPosition: Int, toPosition: Int)

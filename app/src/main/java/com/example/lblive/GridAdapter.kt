@@ -2,6 +2,7 @@ package com.example.lblive
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,7 +34,7 @@ class GridAdapter(
         val textView: TextView = view.findViewById(R.id.textView)
         val checkbox: CheckBox = view.findViewById(R.id.checkbox)
         val slider: SeekBar = view.findViewById(R.id.seekBar)
-        val mute_field: RelativeLayout = view.findViewById(R.id.mute_field)
+        val grid_field: RelativeLayout = view.findViewById(R.id.mute_field)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -52,17 +53,17 @@ class GridAdapter(
         val content = items[position]
 
         if (content.isEmpty()) {
-            holder.mute_field.visibility = View.GONE
+            holder.grid_field.visibility = View.GONE
         } else if (content == "Mute") {
             holder.textView.text = content
-            holder.mute_field.visibility = View.VISIBLE
+            holder.grid_field.visibility = View.VISIBLE
             holder.checkbox.visibility = View.VISIBLE
             holder.checkbox.setOnCheckedChangeListener { _, isChecked ->
                 holder.textView.text = if (isChecked) "mute" else "unmute"
             }
         } else if (content == "Slider") {
             holder.textView.text = content
-            holder.mute_field.visibility = View.VISIBLE
+            holder.grid_field.visibility = View.VISIBLE
             holder.slider.visibility = View.VISIBLE
             }
     }
@@ -70,6 +71,7 @@ class GridAdapter(
     override fun getItemCount() = items.size
 
     override fun onItemMove(fromPosition: Int, toPosition: Int) {
+        Log.d("GridAdapter", "onItemMove: moved from $fromPosition to $toPosition")
         if (items[fromPosition].isNotEmpty() && items[toPosition].isEmpty()) {
             items[toPosition] = items[fromPosition]
             items[fromPosition] = ""
@@ -89,7 +91,7 @@ class GridAdapter(
         dragStateListener(isDragging)
     }
 
-    private fun saveLayout() {
+    fun saveLayout() {
         val json = Gson().toJson(items)
         sharedPreferences.edit().putString("grid_order", json).apply()
     }

@@ -1,7 +1,7 @@
 package com.example.lblive
 
-import android.graphics.Point
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.ViewTreeObserver
 import androidx.fragment.app.Fragment
@@ -94,10 +94,19 @@ class PageOneFragment : Fragment(R.layout.first_page) {
         }
     }
 
-    private fun onItemDroppedOnTrash(position: Int) {
-        if (items[position].isNotEmpty()) {
-            items[position] = ""
-            adapter.notifyItemChanged(position)
+    private fun updateFabSize(isOverTrash: Boolean) {
+        val scale = if (isOverTrash) 1.5f else 1.0f // Größer, wenn Item darüber ist
+        fabAction.animate().scaleX(scale).scaleY(scale).setDuration(150).start()
+    }
+
+
+    private fun onItemDroppedOnTrash(position: Int, view: View) {
+        Log.d("PageOneFragment", "$position")
+        if (position == 31) {
+            Log.d("PageOneFragment", "Item dropped on trash")
+            items[position] = "" // Item wirklich löschen
+            adapter.notifyItemRemoved(position)
+            adapter.saveLayout()
         }
     }
 }
