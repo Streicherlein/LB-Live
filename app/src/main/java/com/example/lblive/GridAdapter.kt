@@ -3,6 +3,8 @@ package com.example.lblive
 import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
+import android.content.ClipData
+import android.view.DragEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,20 +12,19 @@ import android.widget.CheckBox
 import android.widget.RelativeLayout
 import android.widget.SeekBar
 import android.widget.TextView
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import java.util.Collections
+import com.google.android.flexbox.FlexboxLayout
 
 
-class GridAdapter(
+class FlexboxWidgetAdapter(
     private val context: Context,
     private val items: MutableList<String>,
-    private val itemWidth: Int,
-    private val itemHeight: Int,
+    private val columns: Int,
+    private val rows: Int,
     private val dragStateListener: (Boolean) -> Unit
-) : RecyclerView.Adapter<GridAdapter.ViewHolder>(), ItemMoveCallback.ItemMoveListener {
-
+) {
     private val sharedPreferences: SharedPreferences =
         context.getSharedPreferences("grid_layout", Context.MODE_PRIVATE)
 
@@ -31,79 +32,77 @@ class GridAdapter(
         loadLayout()
     }
 
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    fun createView(item: String, parent: ViewGroup): View {
+        val view = LayoutInflater.from(context).inflate(R.layout.flexbox_item, parent, false)
         val textView: TextView = view.findViewById(R.id.textView)
         val checkbox: CheckBox = view.findViewById(R.id.checkbox)
         val slider: SeekBar = view.findViewById(R.id.seekBar)
-        val grid_field: RelativeLayout = view.findViewById(R.id.mute_field)
-    }
+        val gridField: RelativeLayout = view.findViewById(R.id.mute_field)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.mute_item, parent, false)
+        val screenWidth = context.resources.displayMetrics.widthPixels
+        val itemWidth = screenWidth / columns
+        val itemHeight = screenWidth / rows
 
-        val layoutParams = view.layoutParams
-        layoutParams.width = itemWidth
-        layoutParams.height = itemHeight
+        val layoutParams = FlexboxLayout.LayoutParams(itemWidth, itemHeight)
+        layoutParams.flexGrow = 1f
+
+        when (item) {
+            "" -> {
+                textView.visibility = View.GONE
+                checkbox.visibility = View.GONE
+                slider.visibility = View.GONE
+                gridField.setBackgroundResource(R.drawable.background_empty)
+            }
+            "Mute" -> {
+                gridField.setBackgroundResource(R.drawable.rounded_background)
+                textView.text = item
+                textView.visibility = View.VISIBLE
+                checkbox.visibility = View.VISIBLE
+                checkbox.setOnCheckedChangeListener { _, isChecked ->
+                    textView.text = if (isChecked) "mute" else "unmute"
+                }
+            }
+            "Slider" -> {
+                gridField.setBackgroundResource(R.drawable.rounded_background)
+                textView.text = item
+                textView.visibility = View.VISIBLE
+                slider.visibility = View.VISIBLE
+                layoutParams.width = itemWidth * 4 // Slider nimmt 4 Spalten ein
+            }
+        }
+
         view.layoutParams = layoutParams
 
-        return ViewHolder(view)
-    }
-
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val content = items[position]
-        val layoutParams = holder.itemView.layoutParams
-
-        if (content.isEmpty()) {
-            holder.textView.visibility = View.GONE
-            holder.checkbox.visibility = View.GONE
-            holder.slider.visibility = View.GONE
-            holder.grid_field.setBackgroundResource(R.drawable.background_empty)
-        } else if (content == "Mute") {
-            holder.grid_field.setBackgroundResource(R.drawable.rounded_background)
-            holder.textView.text = content
-            holder.textView.visibility = View.VISIBLE
-            holder.grid_field.visibility = View.VISIBLE
-            holder.checkbox.visibility = View.VISIBLE
-            holder.checkbox.setOnCheckedChangeListener { _, isChecked ->
-                holder.textView.text = if (isChecked) "mute" else "unmute"
-
-                layoutParams.width = itemWidth
-                layoutParams.height = itemHeight
-            }
-        } else if (content == "Slider") {
-            holder.grid_field.setBackgroundResource(R.drawable.rounded_background)
-            holder.textView.text = content
-            holder.textView.visibility = View.VISIBLE
-            holder.grid_field.visibility = View.VISIBLE
-            holder.slider.visibility = View.VISIBLE
-
-            layoutParams.width = itemWidth*4
-            layoutParams.height = itemHeight
-            }
-    }
-
-    override fun getItemCount() = items.size
-
-    override fun onItemMove(fromPosition: Int, toPosition: Int) {
-        Log.d("GridAdapter", "onItemMove: moved from $fromPosition to $toPosition")
-        if (items[fromPosition].isNotEmpty() && items[toPosition].isEmpty()) {
-            items[toPosition] = items[fromPosition]
-            items[fromPosition] = ""
-        } else {
-            val item = items.removeAt(fromPosition)
-            items.add(toPosition, item)
+        view.setOnLongClickListener {
+            val clipData = ClipData.newPlainText("", item)
+            val shadow = View.DragShadowBuilder(view)
+            view.startDragAndDrop(clipData, shadow, view, 0)
+            dragStateListener(true)
+            true
         }
-        notifyItemMoved(fromPosition, toPosition)
-        saveLayout()
-    }
 
-    override fun isMovable(fromPosition: Int, toPosition: Int): Boolean {
-        return items[fromPosition].isNotEmpty()
-    }
+        view.setOnDragListener { v, event ->
+            when (event.action) {
+                DragEvent.ACTION_DROP -> {
+                    val draggedView = event.localState as View
+                    val oldIndex = parent.indexOfChild(draggedView)
+                    val newIndex = parent.indexOfChild(v)
 
-    override fun onDragStateChanged(isDragging: Boolean) {
-        dragStateListener(isDragging)
+                    Collections.swap(items, oldIndex, newIndex)
+                    saveLayout()
+                    dragStateListener(false)
+                    parent.removeView(draggedView)
+                    parent.addView(draggedView, newIndex)
+                    true
+                }
+                DragEvent.ACTION_DRAG_ENDED -> {
+                    dragStateListener(false)
+                    true
+                }
+                else -> false
+            }
+        }
+        return view
     }
 
     fun saveLayout() {

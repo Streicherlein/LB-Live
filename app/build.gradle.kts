@@ -61,6 +61,9 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.viewpager2)
+    //Flexibox Layout
+    implementation("com.google.android.flexbox:flexbox:3.0.0")
+
     // RecyclerView für die Liste
     implementation(libs.androidx.recyclerview)
     // SwipeRefreshLayout für die Pull-to-Refresh-Funktion
