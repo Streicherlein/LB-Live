@@ -1,8 +1,23 @@
-<shape xmlns:android="http://schemas.android.com/apk/res/android"
-    android:shape="oval">
-    <size
-        android:height="@dimen/seek_bar_thumb_size"
-        android:width="@dimen/seek_bar_thumb_size"
-        />
-    <solid android:color="@color/seek_bar_progress"/>
-</shape>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="38dp"
+    android:height="23dp"
+    android:viewportWidth="38"
+    android:viewportHeight="23">
+
+    <!-- Hintergrund des Faders (Griff) -->
+    <path
+        android:fillColor="#B0BEC5"
+        android:strokeColor="#78909C"
+        android:strokeWidth="1"
+        android:pathData="M2,4 v16 a2,2 0,0,0 2,2 h30 a2,2 0,0,0 2,-2 v-16 a2,2 0,0,0 -2,-2 h-30 a2,2 0,0,0 -2,2 z" />
+
+    <!-- Horizontaler Strich in der Mitte -->
+    <path
+        android:fillColor="#455A64"
+        android:pathData="M6.5,11 h25 v2 h-25 z" />
+
+</vector>
+
+
+
+

@@ -12,13 +12,23 @@
         android:layout_height="match_parent"
         android:rowCount="8"
         android:columnCount="4"
-        android:padding="8dp"
+        android:padding="0dp"
         android:clipChildren="false"
         android:clipToPadding="false"
-        android:background="@android:color/darker_gray"
+        android:background="@drawable/background_empty"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/fab_add"
         android:layout_marginBottom="16dp" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_trash"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="16dp"
+        android:visibility="gone"/>
 
     <!-- FloatingActionButton (+) -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -28,16 +38,8 @@
         android:src="@drawable/ic_plus"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="16dp" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_delete"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_trash"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="16dp" />
+        android:layout_margin="16dp"
+        android:visibility="visible"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -1,58 +1,629 @@
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="100dp"
     android:height="100dp"
-    android:viewportWidth="100"
-    android:viewportHeight="100">
+    android:viewportWidth="400"
+    android:viewportHeight="800">
 
     <!-- Hintergrund (optional, falls benötigt) -->
     <group>
         <path
             android:fillColor="#FFFFFF"
-            android:pathData="M0,0 H100 V100 H0 Z"/>
+            android:pathData="M0,0 H400 V800 H0 Z"/>
     </group>
+
+    <!-- erste Reihe -->
+
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M0,0 H5"/>
+
+    <!-- Vertikale Linie des Plus-Zeichens -->
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M0,0 V5"/>
 
     <!-- Horizontale Linie des Plus-Zeichens -->
     <path
-        android:strokeWidth="5"
-        android:strokeColor="#000000"
-        android:pathData="M90,0 H100"/>
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M95,0 H105"/>
 
     <!-- Vertikale Linie des Plus-Zeichens -->
     <path
-        android:strokeWidth="5"
-        android:strokeColor="#000000"
-        android:pathData="M100,0 V10"/>
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M100,0 V5"/>
 
     <path
-        android:strokeWidth="5"
-        android:strokeColor="#000000"
-        android:pathData="M90,100 H100"/>
-
-    <!-- Vertikale Linie des Plus-Zeichens -->
-    <path
-        android:strokeWidth="5"
-        android:strokeColor="#000000"
-        android:pathData="M100,100 V90"/>
-
-    <path
-        android:strokeWidth="5"
-        android:strokeColor="#000000"
-        android:pathData="M10,0 H0"/>
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M195+100,0 H205"/>
 
     <!-- Vertikale Linie des Plus-Zeichens -->
     <path
-        android:strokeWidth="5"
-        android:strokeColor="#000000"
-        android:pathData="M0,0 V10"/>
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M200,0 V5"/>
 
     <path
-        android:strokeWidth="5"
-        android:strokeColor="#000000"
-        android:pathData="M00,90 V100"/>
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M295,0 H305"/>
+
+    <!-- Vertikale Linie des Plus-Zeichens -->
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M300,0 V5"/>
 
     <path
-        android:strokeWidth="5"
-        android:strokeColor="#000000"
-        android:pathData="M0,100 H10"/>
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M395,0 H405"/>
+
+    <!-- Vertikale Linie des Plus-Zeichens -->
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M400,0 V5"/>
+
+    <!-- zweite Reihe -->
+
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M0,100 H5"/>
+
+    <!-- Vertikale Linie des Plus-Zeichens -->
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M0,105 V95"/>
+
+    <!-- Horizontale Linie des Plus-Zeichens -->
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M95,100 H105"/>
+
+    <!-- Vertikale Linie des Plus-Zeichens -->
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M100,95 V105"/>
+
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M195,100 H205"/>
+
+    <!-- Vertikale Linie des Plus-Zeichens -->
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M200,95 V105"/>
+
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M295,100 H305"/>
+
+    <!-- Vertikale Linie des Plus-Zeichens -->
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M300,95 V105"/>
+
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M395,100 H405"/>
+
+    <!-- Vertikale Linie des Plus-Zeichens -->
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M400,95 V105"/>
+
+    <!-- dritte Reihe -->
+
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M0,200 H5"/>
+
+    <!-- Vertikale Linie des Plus-Zeichens -->
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M0,195 V205"/>
+
+    <!-- Horizontale Linie des Plus-Zeichens -->
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M95,200 H105"/>
+
+    <!-- Vertikale Linie des Plus-Zeichens -->
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M100,195 V205"/>
+
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M195,200 H205"/>
+
+    <!-- Vertikale Linie des Plus-Zeichens -->
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M200,195 V205"/>
+
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M295,200 H305"/>
+
+    <!-- Vertikale Linie des Plus-Zeichens -->
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M300,195 V205"/>
+
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M395,200 H405"/>
+
+    <!-- Vertikale Linie des Plus-Zeichens -->
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M400,195 V205"/>
+
+    <!-- dritte Reihe -->
+
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M0,300 H5"/>
+
+    <!-- Vertikale Linie des Plus-Zeichens -->
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M0,295 V305"/>
+
+    <!-- Horizontale Linie des Plus-Zeichens -->
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M95,300 H105"/>
+
+    <!-- Vertikale Linie des Plus-Zeichens -->
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M100,295 V305"/>
+
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M195,300 H205"/>
+
+    <!-- Vertikale Linie des Plus-Zeichens -->
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M200,295 V305"/>
+
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M295,300 H305"/>
+
+    <!-- Vertikale Linie des Plus-Zeichens -->
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M300,295 V305"/>
+
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M395,300 H405"/>
+
+    <!-- Vertikale Linie des Plus-Zeichens -->
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M400,295 V305"/>
+
+    <!-- vierte Reihe -->
+
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M0,400 H5"/>
+
+    <!-- Vertikale Linie des Plus-Zeichens -->
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M0,395 V405"/>
+
+    <!-- Horizontale Linie des Plus-Zeichens -->
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M95,400 H105"/>
+
+    <!-- Vertikale Linie des Plus-Zeichens -->
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M100,395 V405"/>
+
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M195,400 H205"/>
+
+    <!-- Vertikale Linie des Plus-Zeichens -->
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M200,395 V405"/>
+
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M295,400 H305"/>
+
+    <!-- Vertikale Linie des Plus-Zeichens -->
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M300,395 V405"/>
+
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M395,400 H405"/>
+
+    <!-- Vertikale Linie des Plus-Zeichens -->
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M400,395 V405"/>
+
+    <!-- fünfte Reihe -->
+
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M0,500 H5"/>
+
+    <!-- Vertikale Linie des Plus-Zeichens -->
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M0,495 V505"/>
+
+    <!-- Horizontale Linie des Plus-Zeichens -->
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M95,500 H105"/>
+
+    <!-- Vertikale Linie des Plus-Zeichens -->
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M100,495 V505"/>
+
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M195,500 H205"/>
+
+    <!-- Vertikale Linie des Plus-Zeichens -->
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M200,495 V505"/>
+
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M295,500 H305"/>
+
+    <!-- Vertikale Linie des Plus-Zeichens -->
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M300,495 V505"/>
+
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M395,500 H405"/>
+
+    <!-- Vertikale Linie des Plus-Zeichens -->
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M400,495 V505"/>
+
+    <!-- sechste Reihe -->
+
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M0,600 H5"/>
+
+    <!-- Vertikale Linie des Plus-Zeichens -->
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M0,595 V605"/>
+
+    <!-- Horizontale Linie des Plus-Zeichens -->
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M95,600 H105"/>
+
+    <!-- Vertikale Linie des Plus-Zeichens -->
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M100,595 V605"/>
+
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M195,600 H205"/>
+
+    <!-- Vertikale Linie des Plus-Zeichens -->
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M200,595 V605"/>
+
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M295,600 H305"/>
+
+    <!-- Vertikale Linie des Plus-Zeichens -->
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M300,595 V605"/>
+
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M395,600 H405"/>
+
+    <!-- Vertikale Linie des Plus-Zeichens -->
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M400,595 V605"/>
+
+    <!-- siebte Reihe -->
+
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M0,700 H5"/>
+
+    <!-- Vertikale Linie des Plus-Zeichens -->
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M0,695 V705"/>
+
+    <!-- Horizontale Linie des Plus-Zeichens -->
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M95,700 H105"/>
+
+    <!-- Vertikale Linie des Plus-Zeichens -->
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M100,695 V705"/>
+
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M195,700 H205"/>
+
+    <!-- Vertikale Linie des Plus-Zeichens -->
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M200,695 V705"/>
+
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M295,700 H305"/>
+
+    <!-- Vertikale Linie des Plus-Zeichens -->
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M300,695 V705"/>
+
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M395,700 H405"/>
+
+    <!-- Vertikale Linie des Plus-Zeichens -->
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M400,695 V705"/>
+
+    <!-- achte Reihe -->
+
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M0,800 H5"/>
+
+    <!-- Vertikale Linie des Plus-Zeichens -->
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M0,795 V805"/>
+
+    <!-- Horizontale Linie des Plus-Zeichens -->
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M95,800 H105"/>
+
+    <!-- Vertikale Linie des Plus-Zeichens -->
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M100,795 V805"/>
+
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M195,800 H205"/>
+
+    <!-- Vertikale Linie des Plus-Zeichens -->
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M200,795 V805"/>
+
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M295,800 H305"/>
+
+    <!-- Vertikale Linie des Plus-Zeichens -->
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M300,795 V805"/>
+
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M395,800 H405"/>
+
+    <!-- Vertikale Linie des Plus-Zeichens -->
+    <path
+        android:strokeWidth="3"
+        android:strokeColor="#4DA3B0C3"
+        android:strokeLineCap="round"
+        android:pathData="M400,795 V805"/>
+
+
+
 
 </vector>

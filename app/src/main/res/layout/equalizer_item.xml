@@ -9,26 +9,16 @@
     <!-- TextView oben -->
     <TextView
         android:id="@+id/textView"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:textSize="16sp"
-        android:text="Mute"
-        android:layout_gravity="center_horizontal"
+        android:text="Equalizer"
+        android:layout_alignParentTop="true"
         android:layout_marginTop="12dp"/>
 
-    <!-- CheckBox unter dem Text -->
-    <CheckBox
-        android:id="@+id/checkbox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal|bottom"
-        android:layout_marginTop="12dp"
-        android:minWidth="48dp"
-        android:minHeight="48dp"/>
-
     <ImageButton
-        android:id="@+id/settings_button_mute"
+        android:id="@+id/settings_button_eq"
         android:layout_width="24dp"
         android:layout_height="25dp"
         android:layout_gravity="end|bottom"
@@ -41,11 +31,3 @@
         android:focusable="true" />
 
 </FrameLayout>
-
-
-
-
-
-
-
-

@@ -11,7 +11,7 @@
     <color name="yellow">#FFFF00</color>
     <color name="green">#7CFC00</color>
     <color name="seek_bar_background">#ababab</color>
-    <color name="seek_bar_progress">#9caabc</color>
+    <color name="seek_bar_progress">#808080</color>
     <color name="seek_bar_secondary_progress">#3399CC</color>
     <color name="transparent">#00FFFFFF</color>
 </resources>

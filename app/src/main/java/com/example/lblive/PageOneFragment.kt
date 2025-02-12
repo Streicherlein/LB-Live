@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import androidx.core.content.ContextCompat
 import android.view.DragEvent
+import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import android.widget.Toast
@@ -32,7 +33,9 @@ class PageOneFragment : Fragment(R.layout.first_page) {
 
         // Inflate the gridLayout and FAB from the layout
         gridLayout = view.findViewById(R.id.gridLayout)
-        val fabAdd: FloatingActionButton = view.findViewById(R.id.fab_add)
+
+        val fabAdd = view.findViewById<FloatingActionButton>(R.id.fab_add)
+
 
         // Set up the FAB click listener to show size options
         fabAdd.setOnClickListener {
@@ -41,6 +44,24 @@ class PageOneFragment : Fragment(R.layout.first_page) {
 
         // Set up drag and drop functionality
         setupDragAndDrop(view)
+    }
+
+    private fun createWidgetView(widget: Widget): View {
+        val widgetLayoutRes = when (widget.width to widget.height) {
+            1 to 1 -> R.layout.mute_item
+            1 to 4 -> R.layout.slider_item
+            2 to 2 -> R.layout.equalizer_item
+            2 to 1 -> R.layout.preset_item
+            else -> throw IllegalArgumentException("Unknown widget size")
+        }
+
+        // Inflate the layout based on widget size
+        val widgetView = LayoutInflater.from(requireContext()).inflate(widgetLayoutRes, null)
+
+        // Optionally set widget-specific content, for example:
+        // widgetView.findViewById<TextView>(R.id.widget_title).text = "Widget ${widget.id}"
+
+        return widgetView
     }
 
     private fun showWidgetSizeMenu(view: View) {
@@ -115,37 +136,32 @@ class PageOneFragment : Fragment(R.layout.first_page) {
                 }
             }
 
-            // Create the widget view and position it
+            // Create the widget view from its layout resource
+            val widgetView = createWidgetView(widget)
+
+            // Set the size and position of the widget
             val cellWidth = gridLayout.width / 4
             val cellHeight = gridLayout.height / 8
 
-            val widgetView = TextView(context).apply {
-                text = "Widget ${widget.id}"
-                setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.purple_200))
-                setTextColor(ContextCompat.getColor(requireContext(), R.color.gray))
-                gravity = Gravity.CENTER
-                textSize = 16f
+            widgetView.layoutParams = GridLayout.LayoutParams().apply {
+                width = cellWidth * widget.width
+                height = cellHeight * widget.height
+                columnSpec = GridLayout.spec(col, widget.width)
+                rowSpec = GridLayout.spec(row, widget.height)
+                setMargins(0, 0, 0, 0)
+            }
 
-                layoutParams = GridLayout.LayoutParams().apply {
-                    width = cellWidth * widget.width
-                    height = cellHeight * widget.height
-                    columnSpec = GridLayout.spec(col, widget.width)
-                    rowSpec = GridLayout.spec(row, widget.height)
-                    setMargins(4, 4, 4, 4)
-                }
+            // Store the widget in the view's tag for later reference
+            widgetView.setTag(widget)
 
-                // Store the widget in the view's tag
-                setTag(widget)
-
-                setOnTouchListener { v, event ->
-                    if (event.action == MotionEvent.ACTION_DOWN) {
-                        val shadow = View.DragShadowBuilder(v)
-                        v.startDragAndDrop(null, shadow, v, 0)
-                        v.visibility = View.INVISIBLE  // Hide widget during drag
-                        true
-                    } else {
-                        false
-                    }
+            widgetView.setOnTouchListener { v, event ->
+                if (event.action == MotionEvent.ACTION_DOWN) {
+                    val shadow = View.DragShadowBuilder(v)
+                    v.startDragAndDrop(null, shadow, v, 0)
+                    v.visibility = View.INVISIBLE  // Hide widget during drag
+                    true
+                } else {
+                    false
                 }
             }
 
@@ -184,7 +200,7 @@ class PageOneFragment : Fragment(R.layout.first_page) {
 
     // This function searches for the closest available position in the grid
     private fun findClosestValidPosition(row: Int, col: Int, widget: Widget): Pair<Int, Int>? {
-        for (r in 0 until grid.size) {
+        for (r in grid.indices) {
             for (c in 0 until grid[0].size) {
                 if (isValidPosition(r, c, widget)) {
                     return Pair(r, c)  // Return the closest valid position
@@ -204,7 +220,9 @@ class PageOneFragment : Fragment(R.layout.first_page) {
         gridLayout.setOnDragListener { _, event ->
             when (event.action) {
                 DragEvent.ACTION_DRAG_STARTED -> {
-                    // No need to do anything here
+                    view.findViewById<FloatingActionButton>(R.id.fab_add).visibility = View.GONE
+                    view.findViewById<FloatingActionButton>(R.id.fab_delete).visibility =
+                        View.VISIBLE
                     true
                 }
 
@@ -222,57 +240,65 @@ class PageOneFragment : Fragment(R.layout.first_page) {
                     Log.d("DragDrop", "Dropped at X: $dropX, Y: $dropY")
 
                     // Calculate the grid cell where the widget should be dropped
-                    val dropRow = (dropY / cellHeight).toInt()
-                    val dropCol = (dropX / cellWidth).toInt()
+                    var dropRow = (dropY / cellHeight).toInt()
+                    var dropCol = (dropX / cellWidth).toInt()
 
                     // Log the calculated grid cell
                     Log.d("DragDrop", "Calculated grid position: Row: $dropRow, Col: $dropCol")
 
-                    // Ensure the widget only drops inside the grid
-                    if (dropRow in 0 until 8 && dropCol in 0 until 4) {
-                        // Ensure the widget fits in the new grid cell
-                        if (isSpaceAvailable(dropRow, dropCol, widget.width, widget.height)) {
-                            Log.d("DragDrop", "Space available, moving widget.")
-                            // Move the widget to the new free position
-                            moveWidgetToPosition(draggedView, dropRow, dropCol, widget)
-                        } else {
-                            Log.d("DragDrop", "No space available, restoring widget.")
-                            // If no space is available, restore the widget to its original position
-                            val originalPosition = widgetPositions[draggedView]
-                            if (originalPosition != null) {
-                                moveWidgetToPosition(
-                                    draggedView,
-                                    originalPosition.first,
-                                    originalPosition.second,
-                                    widget
+
+                    val removeRow = dropRow
+                    val removeCol = dropCol
+
+                        // Step 1: Adjust for out-of-bounds placement
+                        val adjustedPosition = adjustForBounds(dropRow, dropCol, widget)
+                        dropRow = adjustedPosition.first
+                        dropCol = adjustedPosition.second
+
+                        // Step 2: If space is occupied, move other widgets
+                        if (!isSpaceAvailable(dropRow, dropCol, widget.width, widget.height)) {
+                            Log.d("DragDrop", "No space available, finding alternative position.")
+
+                            // Try moving existing widgets
+                            moveWidgetsAway(dropRow, dropCol, widget.width, widget.height)
+
+                            // Check again if space is available after moving widgets
+                            if (!isSpaceAvailable(dropRow, dropCol, widget.width, widget.height)) {
+                                Log.d(
+                                    "DragDrop",
+                                    "Still no space available, restoring to original position."
                                 )
+                                val originalPosition = widgetPositions[draggedView]
+                                if (originalPosition != null) {
+                                    dropRow = originalPosition.first
+                                    dropCol = originalPosition.second
+                                }
                             }
                         }
-                    } else {
-                        Log.d("DragDrop", "Drop outside grid, restoring widget.")
-                        // If outside the grid, restore the widget to its original position
-                        val originalPosition = widgetPositions[draggedView]
-                        if (originalPosition != null) {
-                            moveWidgetToPosition(
-                                draggedView,
-                                originalPosition.first,
-                                originalPosition.second,
-                                widget
-                            )
-                        }
-                    }
-                    true
+
+                        // Step 3: Move the widget to the determined position
+                        Log.d("DragDrop", "Final drop position: Row: $dropRow, Col: $dropCol")
+                        moveWidgetToPosition(draggedView, dropRow, dropCol, widget)
+                        removeWidgetFromGrid(draggedView, removeRow, removeCol, dropRow, dropCol)
+                        true
+
                 }
+
 
                 DragEvent.ACTION_DRAG_ENDED -> {
                     val draggedView = event.localState as View
                     draggedView.visibility = View.VISIBLE
+                    view.findViewById<FloatingActionButton>(R.id.fab_add).visibility =
+                        View.VISIBLE
+                    view.findViewById<FloatingActionButton>(R.id.fab_delete).visibility =
+                        View.GONE
                     true
                 }
 
                 else -> false
             }
-        }
+            }
+
     }
 
 
@@ -286,7 +312,7 @@ class PageOneFragment : Fragment(R.layout.first_page) {
     private fun moveWidgetToPosition(view: View, row: Int, col: Int, widget: Widget) {
         val currentPosition = widgetPositions[view]
 
-        // Clear the old position
+        // Clear old position
         currentPosition?.let { (oldRow, oldCol) ->
             for (r in oldRow until oldRow + widget.height) {
                 for (c in oldCol until oldCol + widget.width) {
@@ -295,31 +321,87 @@ class PageOneFragment : Fragment(R.layout.first_page) {
             }
         }
 
-        // Ensure the new space is valid
-        if (!isSpaceAvailable(row, col, widget.width, widget.height)) {
-            Log.d("DragDrop", "New space occupied, trying to push other widgets")
-            pushWidgetsIfNeeded(row, col, widget.width, widget.height)
+        // Check if out of bounds and adjust
+        val adjustedPosition = adjustForBounds(row, col, widget)
+        var (newRow, newCol) = adjustedPosition
+
+        // Check if the new space is occupied and move widgets away
+        if (!isSpaceAvailable(newRow, newCol, widget.width, widget.height)) {
+            pushWidgetsIfNeeded(newRow, newCol, widget.width, widget.height)
         }
 
-        // Update the widget's position in the UI
+        // Now place the widget at its final position
         val cellWidth = gridLayout.width / 4
         val cellHeight = gridLayout.height / 8
-        view.x = col * cellWidth.toFloat()
-        view.y = row * cellHeight.toFloat()
+        view.x = newCol * cellWidth.toFloat()
+        view.y = newRow * cellHeight.toFloat()
 
         // Update grid occupancy
-        for (r in row until row + widget.height) {
-            for (c in col until col + widget.width) {
+        for (r in newRow until newRow + widget.height) {
+            for (c in newCol until newCol + widget.width) {
                 grid[r][c] = 1 // Mark as occupied
             }
         }
 
         // Store new position
-        widgetPositions[view] = Pair(row, col)
+        widgetPositions[view] = Pair(newRow, newCol)
+    }
+
+    private fun adjustForBounds(row: Int, col: Int, widget: Widget): Pair<Int, Int> {
+        var newRow = row
+        var newCol = col
+        Log.d("DragDrop", "Adjusting for bounds: Row: $row, Col: $col")
+        // Ensure the widget doesn't exceed the grid height
+        if (newRow + widget.height > 8) {
+            newRow = 8 - widget.height // Move up until it fits
+            Log.d("DragDrop", "New Row after adjustment: $newRow")
+        }
+
+        // Ensure the widget doesn't exceed the grid width
+        if (newCol + widget.width > 4) {
+            newCol = 4 - widget.width // Move left if needed
+            Log.d("DragDrop", "New Col after adjustment: $newCol")
+        }
+
+        return Pair(newRow, newCol)
+    }
+
+    private fun moveWidgetsAway(row: Int, col: Int, width: Int, height: Int) {
+        val widgetsToMove = mutableListOf<View>()
+
+        // Find widgets in the target space
+        for (view in widgetViews) {
+            val position = widgetPositions[view]
+            if (position != null) {
+                val (widgetRow, widgetCol) = position
+                val widget = getWidgetByView(view)
+
+                // Check if this widget is in the way
+                if (widgetRow < row + height && widgetRow + widget.height > row &&
+                    widgetCol < col + width && widgetCol + widget.width > col) {
+                    widgetsToMove.add(view)
+                }
+            }
+        }
+
+        // Move each widget to a nearby free space
+        for (view in widgetsToMove) {
+            val widget = getWidgetByView(view)
+            val newPosition = findFirstFreeSpace(widget.width, widget.height)
+            if (newPosition != null) {
+                moveWidgetToPosition(view, newPosition.first, newPosition.second, widget)
+            }
+        }
     }
 
 
+
+
+
     private fun pushWidgetsIfNeeded(row: Int, col: Int, width: Int, height: Int) {
+        val widgetsToMove = mutableListOf<View>()
+
+        // Identify widgets that need to be moved
         for (view in widgetViews) {
             val (widgetRow, widgetCol) = widgetPositions[view] ?: continue
             val widget = getWidgetByView(view)
@@ -327,55 +409,59 @@ class PageOneFragment : Fragment(R.layout.first_page) {
             if (widgetRow < row + height && widgetRow + widget.height > row &&
                 widgetCol < col + width && widgetCol + widget.width > col) {
 
-                Log.d("DragDrop", "Pushing widget ${widget.id} away from ($widgetRow, $widgetCol)")
+                widgetsToMove.add(view)
+            }
+        }
 
-                val newPosition = findClosestValidPosition(widgetRow, widgetCol, widget)
-                if (newPosition != null) {
-                    moveWidgetToPosition(view, newPosition.first, newPosition.second, widget)
-                } else {
-                    Log.d("DragDrop", "No space to push widget ${widget.id}, leaving in place")
-                }
+        // Move each affected widget to the nearest free space
+        for (view in widgetsToMove) {
+            val widget = getWidgetByView(view)
+            val newPosition = findClosestValidPosition(row, col, widget)
+
+            if (newPosition != null) {
+                moveWidgetToPosition(view, newPosition.first, newPosition.second, widget)
+            } else {
+                Log.d("DragDrop", "No space found for widget ${widget.id}, leaving it in place")
             }
         }
     }
 
-    private fun getClosestValidPosition(row: Int, col: Int, width: Int, height: Int): Pair<Int, Int>? {
-        // Check if the calculated position is out of bounds or invalid
-        if (row >= grid.size || col >= grid[0].size || row + height > grid.size || col + width > grid[0].size) {
-            // Try finding the closest valid position within bounds
-            for (r in 0 until grid.size) {
-                for (c in 0 until grid[0].size) {
-                    // Check if this spot is available
-                    if (isSpaceAvailable(r, c, width, height)) {
-                        return Pair(r, c)
-                    }
-                }
-            }
-        }
-        return null
-    }
 
 
 
-    private fun removeWidgetFromGrid(view: View) {
+
+    private fun removeWidgetFromGrid(view: View, deleteRow: Int, deleteCol: Int, dropRow: Int, dropCol: Int) {
         // Retrieve the widget's position from the map
         val position = widgetPositions[view]
+        Log.d("WidgetRemoval", "Checking to remove widget at position: $position")
+
+        // Make sure the position is not null and it's within valid grid bounds
         if (position != null) {
-            val (row, col) = position
-
-            // Clear the grid cells occupied by this widget
-            for (r in row until row + getWidgetByView(view).height) {
-                for (c in col until col + getWidgetByView(view).width) {
-                    grid[r][c] = 0 // Mark the cells as empty
+            // Check if the widget is dropped in the bottom-right field (7, 3)
+            if (deleteRow == 7 && deleteCol == 3) {
+                // Remove the widget from the grid
+                for (r in dropRow until dropRow + getWidgetByView(view).height) {
+                    for (c in dropCol until dropCol + getWidgetByView(view).width) {
+                        grid[r][c] = 0 // Mark the cells as empty
+                    }
                 }
+
+                // Remove the widget from the position map
+                widgetPositions.remove(view)
+
+                // Remove the view itself from the layout
+                (view.parent as? ViewGroup)?.removeView(view)
+
+                // Optionally log the removal or show a message
+                Log.d("WidgetRemoval", "Widget removed at position ($dropRow, $dropCol)")
+
+            } else {
+                // If the drop position isn't the bottom-right field, no need to remove
+                Log.d("WidgetRemoval", "Widget drop position ($dropRow, $dropCol) is not the bottom-right field.")
+
             }
-
-            // Remove the widget from the position map
-            widgetPositions.remove(view)
-
-            // Remove the view itself from the layout
-            (view.parent as? ViewGroup)?.removeView(view)
         }
+
     }
 
     // Helper class to represent grid cells
